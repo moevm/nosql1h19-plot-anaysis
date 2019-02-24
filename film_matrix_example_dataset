@@ -1,0 +1,20 @@
+CREATE (TheMatrix:Movie {title:'The Matrix', released:1999, origin:'American', genre:'epic', plot:'A programmer is brought back to reason and reality when learning he was living in a program created by gigantic machines which make human birth artificial. In order to set humanity free, Neo will have to face many enemies by using technologies and self-trust.'})
+CREATE (Keanu:Person {name:'Keanu Reeves'})
+CREATE (Carrie:Person {name:'Carrie-Anne Moss'})
+CREATE (Laurence:Person {name:'Laurence Fishburne'})
+CREATE (Hugo:Person {name:'Hugo Weaving'})
+CREATE (LillyW:Person {name:'Lilly Wachowski'})
+CREATE (LanaW:Person {name:'Lana Wachowski'})
+CREATE (JoelS:Person {name:'Joel Silver'})
+CREATE
+  (Keanu)-[:ACTED_IN {roles:['Neo']}]->(TheMatrix),
+  (Carrie)-[:ACTED_IN {roles:['Trinity']}]->(TheMatrix),
+  (Laurence)-[:ACTED_IN {roles:['Morpheus']}]->(TheMatrix),
+  (Hugo)-[:ACTED_IN {roles:['Agent Smith']}]->(TheMatrix),
+  (LillyW)-[:DIRECTED]->(TheMatrix),
+  (LanaW)-[:DIRECTED]->(TheMatrix),
+  (JoelS)-[:PRODUCED]->(TheMatrix)
+
+CREATE (Emil:Person {name:"Emil Eifrem", born:1978})
+CREATE (Emil)-[:ACTED_IN {roles:["Emil"]}]->(TheMatrix)
+;

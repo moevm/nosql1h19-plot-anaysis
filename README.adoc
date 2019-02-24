@@ -1,0 +1,49 @@
+== Neo4j Movies Plots Analysis Application - The neo4j-python-driver (Bolt) Edition
+
+=== Stack
+
+* https://github.com/neo4j/neo4j-python-driver[neo4j-python-driver] - Neo4j Bolt Driver for Python
+* http://flask.pocoo.org/[Flask] - Python microframework based on Werkzeug, Jinja 2 and good intentions.
+* Neo4j-Server
+* Frontend: jquery, bootstrap, http://d3js.org/[d3.js]
+
+
+=== Setup
+
+[source]
+----
+$ virtualenv neo4j-movies
+$ source neo4j-movies/bin/activate
+----
+
+The next step is to install the dependencies for the app:
+
+[source]
+----
+(neo4j-movies)$ pip install -r requirements.txt
+----
+
+=== Run locally
+
+Start your local Neo4j Server (http://neo4j.com/download[Download & Install]), open the http://localhost:7474[Neo4j Browser]. 
+Then enter the code from "film_matrix_example"
+
+Finally start up a Flask web server:
+
+For Linux:
+[source]
+----
+(neo4j-movies)$ export NEO4J_PASSWORD="my-password"
+(neo4j-movies)$ python movies.py
+ * Running on http://127.0.0.1:8080/
+----
+
+For Windows:
+[source]
+----
+(neo4j-movies)> SET NEO4J_PASSWORD=my-password
+(neo4j-movies)> python movies.py
+ * Running on http://127.0.0.1:8080/
+----
+
+Navigate to http://localhost:8080 for application
