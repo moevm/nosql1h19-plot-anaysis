@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 import os
 from json import dumps
 from flask import Flask, g, Response, request
 
-from neo4j.v1 import GraphDatabase, basic_auth
+from neo4j import GraphDatabase, basic_auth
 
 app = Flask(__name__, static_url_path='/static/')
 
@@ -11,19 +10,23 @@ password = os.getenv("NEO4J_PASSWORD")
 
 driver = GraphDatabase.driver('bolt://localhost',auth=basic_auth("neo4j", password))
 
+
 def get_db():
     if not hasattr(g, 'neo4j_db'):
         g.neo4j_db = driver.session()
     return g.neo4j_db
+
 
 @app.teardown_appcontext
 def close_db(error):
     if hasattr(g, 'neo4j_db'):
         g.neo4j_db.close()
 
+
 @app.route("/")
 def get_index():
     return app.send_static_file('index.html')
+
 
 def serialize_movie(movie):
     return {
@@ -35,12 +38,14 @@ def serialize_movie(movie):
         'origin': movie['origin']
     }
 
+
 def serialize_cast(cast):
     return {
         'name': cast[0],
         'job': cast[1],
         'role': cast[2]
     }
+
 
 @app.route("/graph")
 def get_graph():
