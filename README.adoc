@@ -1,4 +1,4 @@
-== Neo4j Movies Plots Analysis Application - Example like 'Hello, world!'
+== Neo4j Movies Plots Analysis Application
 
 === Stack
 
