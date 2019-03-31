@@ -46,18 +46,25 @@ def serialize_cast(cast):
         'role': cast[2]
     }
 
+@app.route("/act_graph")
+def get_act_graph():
+    return app.send_static_file("act_graph.html") 
+
+@app.route("/dir_graph")
+def get_dir_graph():
+    return app.send_static_file("dir_graph.html") 
 
 @app.route("/graph")
 def get_graph():
     db = get_db()
-    results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) "
-             "RETURN m.title as movie, collect(a.name) as cast "
+    results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) WHERE a.name<>'Unknown'"
+             "RETURN m.title as movie,m.wiki as wiki, collect(a.name) as cast "
              "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
     nodes = []
     rels = []
     i = 0
     for record in results:
-        nodes.append({"title": record["movie"], "label": "movie"})
+        nodes.append({"title": record["movie"], "label": "movie","wiki":record["wiki"]})
         target = i
         i += 1
         for name in record['cast']:
@@ -72,6 +79,30 @@ def get_graph():
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
 
+@app.route("/graph_dir")
+def get_graph_dir():
+    db = get_db()
+    results = db.run("MATCH (m:Movie)<-[:DIRECTED]-(a:Person) WHERE a.name<>'Unknown'"
+             "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast "
+             "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
+    nodes = []
+    rels = []
+    i = 0
+    for record in results:
+        nodes.append({"title": record["movie"], "label": "movie","wiki":record["wiki"]})
+        target = i
+        i += 1
+        for name in record['cast']:
+            director = {"title": name, "label": "director"}
+            try:
+                source = nodes.index(director)
+            except ValueError:
+                nodes.append(director)
+                source = i
+                i += 1
+            rels.append({"source": source, "target": target})
+    return Response(dumps({"nodes": nodes, "links": rels}),
+                    mimetype="application/json")
 
 @app.route("/search")
 def get_search():
