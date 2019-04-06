@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block js %}
+<script type="text/javascript" src = "/static/js/index_search.js"></script>
+<script type="text/javascript" src = "/static/js/act_graph.js"></script>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/css/index.css">
+{% endblock %}
+
+{% block for_graph %}
+    <div id="graph">
+    </div>
+{% endblock %}
+{% block nav%}
+    <li>
+        <form role="search" class="navbar-form" id="search">
+            <div class="form-group">
+                <input type="text" value="Matrix" placeholder="Search for Movie Title" class="form-control" name="search">
+                <button class="btn btn-default" type="submit">Search</button>
+            </div>
+        </form>
+    </li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">Search Results</div>
+            <table id="results" class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Released</th>
+                    <th>Origin</th>
+                    <th>Genre</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-heading" id="title">Details</div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6">
+                    <h4>Crew</h4>
+                    <ul id="crew">
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <h4>Plot</h4>
+                    <div id="plot">Kek</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

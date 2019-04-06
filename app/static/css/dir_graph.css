@@ -1,0 +1,18 @@
+.node {
+    stroke: #222;
+    stroke-width: 1.5px;
+}
+.node.director {
+    fill: #00f;
+}
+.node.movie {
+    fill: #ff0;
+}
+#graph {
+    overflow: hidden;
+}
+.link {
+    stroke: #999;
+    stroke-opacity: .6;
+    stroke-width: 3px;
+}
