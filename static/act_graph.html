@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <title>Neo4j Movies</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -89,17 +89,18 @@
 		$(document).ready(function(){
 		    $('svg').bind('mousewheel', function(e){
 		        if(e.originalEvent.wheelDelta /120 > 0) {
-		            console.log('scrolling up !');
-		            change_size-=100;
+		            //console.log('scrolling up !');
+                    if (change_size > 200)
+                        change_size-=100;
 		        }
 		        else{
-		            console.log('scrolling down !');
+		           // console.log('scrolling down !');
 		            change_size+=100;
 		        }
 		        $('svg').attr('viewBox',`${vbox_x} ${vbox_y} ${change_size} ${change_size}`)
 		    });
 		    $('svg').bind('mousedown', function(e){
-		    	console.log('ke!');
+		    	//console.log('ke!');
 		        document.onmousemove = function(k){
 		        	vbox_x+=(k.pageX-e.pageX)/100;
 		        	vbox_y+=(k.pageY-e.pageY)/100;
@@ -108,7 +109,7 @@
 		        }
 		    });
 		    $('svg').bind('mouseup', function(e){
-		    	console.log('wke!');
+		    	//console.log('wke!');
 		        document.onmousemove = null
 		    });
 		});
