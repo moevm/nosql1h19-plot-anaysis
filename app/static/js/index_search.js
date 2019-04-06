@@ -7,7 +7,7 @@ $(function () {
                 $("#plot").text(data.plot);
                 var $list = $("#crew").empty();
                 data.cast.forEach(function (cast) {
-                    $list.append($("<li>" + cast.name + " " + cast.job + (cast.job == "acted" ? " as " + cast.role : "") + "</li>"));
+                    $list.append($("<li>" + cast.name + "</li>"));
                 });
             }, "json");
         return false;
