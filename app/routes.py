@@ -10,6 +10,7 @@ password = os.getenv("NEO4J_PASSWORD")
 
 driver = GraphDatabase.driver('bolt://localhost',auth=basic_auth("neo4j", password))
 
+
 def get_db():
     if not hasattr(g, 'neo4j_db'):
         g.neo4j_db = driver.session()
@@ -45,13 +46,26 @@ def serialize_cast(cast):
         'role': cast[2]
     }
 
+
 @app.route("/act_graph")
 def get_act_graph():
     return render_template("act_graph.html")
 
+
 @app.route("/dir_graph")
 def get_dir_graph():
     return render_template("dir_graph.html")
+
+
+@app.route("/export_page")
+def get_export_page():
+    return app.render_template("export_page.html")
+
+
+@app.route("/import_page")
+def get_import_page():
+    return app.render_template("import_page.html")
+
 
 @app.route("/graph")
 def get_graph():
@@ -78,6 +92,7 @@ def get_graph():
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
 
+
 @app.route("/graph_dir")
 def get_graph_dir():
     db = get_db()
@@ -102,6 +117,7 @@ def get_graph_dir():
             rels.append({"source": source, "target": target})
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
+
 
 @app.route("/search")
 def get_search():
