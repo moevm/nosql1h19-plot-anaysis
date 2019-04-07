@@ -1,6 +1,6 @@
 import os
 from json import dumps
-from flask import Flask, g, Response, request, render_template
+from flask import Flask, g, Response, request, render_template, send_from_directory
 
 from neo4j import GraphDatabase, basic_auth
 
@@ -9,6 +9,7 @@ from app import app
 password = os.getenv("NEO4J_PASSWORD")
 
 driver = GraphDatabase.driver('bolt://localhost',auth=basic_auth("neo4j", password))
+
 
 def get_db():
     if not hasattr(g, 'neo4j_db'):
@@ -45,13 +46,21 @@ def serialize_cast(cast):
         'role': cast[2]
     }
 
+
 @app.route("/act_graph")
 def get_act_graph():
     return render_template("act_graph.html")
 
+
 @app.route("/dir_graph")
 def get_dir_graph():
     return render_template("dir_graph.html")
+
+
+@app.route("/import_page")
+def get_import_page():
+    return render_template("import_page.html")
+
 
 @app.route("/graph")
 def get_graph():
@@ -78,6 +87,7 @@ def get_graph():
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
 
+
 @app.route("/graph_dir")
 def get_graph_dir():
     db = get_db()
@@ -102,6 +112,7 @@ def get_graph_dir():
             rels.append({"source": source, "target": target})
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
+
 
 @app.route("/search")
 def get_search():
@@ -136,3 +147,41 @@ def get_movie(title):
                            "cast": [serialize_cast(member)
                                     for member in result['cast']]}),
                     mimetype="application/json")
+
+
+@app.route("/import")
+def import_graph_data():
+    db = get_db()
+    db.run("MATCH ()-[r]->() DELETE r")
+    db.run("MATCH (n) DELETE n")
+   
+    db.run(
+"load csv with headers from 'file:///wiki_movie_plots_deduped.csv' as line "
+"merge (n:Movie {title:line.Title, released:line.ReleaseYear, origin:line.Origin, genre:line.Genre, wiki:line.WikiPage, plot:line.Plot}) "
+"FOREACH (actor in split(line.Cast, ',') | "
+"merge (a:Person {name:replace(replace(replace(actor,'[',''),']',''),'\"','')}) merge (a)-[:ACTED_IN]->(n)) "
+"FOREACH (director in split(line.Director, ',') | "
+"FOREACH (dir in split(director,' and ') | "
+"merge (d:Person {name:replace(replace(replace(dir,'[',''),']',''),'\"','')}) merge (d)-[:DIRECTED]->(n)))"
+    )
+  
+    return Response(dumps({"message": "Import completed"}),
+                    mimetype="application/json")
+
+
+@app.route("/export")
+def export_graph_data():
+    db = get_db()
+    movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
+    path = '/export'
+    
+    try:
+        os.mkdir(path)
+    except OSError:
+        print('Создать директорию %s не удалось' % path)
+    else:
+        print('Успешно создана директория %s ' % path)
+
+    db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query": movies_data, "path": os.getcwd() + "/export/movies.csv"})
+
+    return send_from_directory(os.getcwd() + '/export', 'movies.csv', as_attachment=True, mimetype='text/csv', attachment_filename='movies.csv')
