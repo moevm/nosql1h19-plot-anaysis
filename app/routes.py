@@ -173,6 +173,15 @@ def import_graph_data():
 def export_graph_data():
     db = get_db()
     movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
+    path = '/export'
+    
+    try:
+        os.mkdir(path)
+    except OSError:
+        print('Создать директорию %s не удалось' % path)
+    else:
+        print('Успешно создана директория %s ' % path)
+
     db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query": movies_data, "path": os.getcwd() + "/export/movies.csv"})
 
     return send_from_directory(os.getcwd() + '/export', 'movies.csv', as_attachment=True, mimetype='text/csv', attachment_filename='movies.csv')
