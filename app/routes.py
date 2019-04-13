@@ -154,7 +154,6 @@ def import_graph_data():
     db = get_db()
     db.run("MATCH ()-[r]->() DELETE r")
     db.run("MATCH (n) DELETE n")
-   
     db.run(
 "load csv with headers from 'file:///wiki_movie_plots_deduped.csv' as line "
 "merge (n:Movie {title:line.Title, released:line.ReleaseYear, origin:line.Origin, genre:line.Genre, wiki:line.WikiPage, plot:line.Plot}) "
@@ -173,7 +172,7 @@ def import_graph_data():
 def export_graph_data():
     db = get_db()
     movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
-    path = '/export'
+    path = 'export'
     
     try:
         os.mkdir(path)
@@ -181,7 +180,92 @@ def export_graph_data():
         print('Создать директорию %s не удалось' % path)
     else:
         print('Успешно создана директория %s ' % path)
-
-    db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query": movies_data, "path": os.getcwd() + "/export/movies.csv"})
+    print(os.getcwd())
+    db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query":movies_data,"path": os.getcwd() + "/export/movies.csv"})
 
     return send_from_directory(os.getcwd() + '/export', 'movies.csv', as_attachment=True, mimetype='text/csv', attachment_filename='movies.csv')
+
+@app.route("/stats")
+def get_stats_page():
+    db = get_db()
+    years = db.run("match (n) return tointeger(min(n.released)) as min,tointeger(max(n.released)) as max")
+    years = years.single()
+    years = [(x)for x in range(years['min'],years['max']+1)]
+    genres=[]
+    tmp = db.run("match(n:Movie) where n.genre <> 'unknown' and not n.genre contains ',' and not trim(n.genre) contains '/' return trim(n.genre) as genre, count(trim(n.genre)) as counts order by counts desc limit 20")
+    for genre in tmp:
+        genres.append(genre['genre'])
+    return render_template("stats.html", years = years, genres = genres)
+
+@app.route("/get_act_max_film_time", methods=['GET'])
+def get_act_max_film_time():
+    year_from = request.args["year_from"]
+    year_to= request.args["year_to"]
+    db = get_db()
+    data=[]
+    acts = db.run("match (n)-[r:ACTED_IN]-(p:Person) where n.released> {from} and n.released < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':year_from,'to':year_to})
+    for act in acts:
+        data.append([act["name"],act["counts"]])
+    return Response(dumps(data), mimetype="application/json")
+
+@app.route("/get_dir_max_film_time")
+def get_dir_max_film_time():
+    year_from = request.args["year_from"]
+    year_to= request.args["year_to"]
+    db = get_db()
+    data=[]
+    dirs = db.run("match (n)-[r:DIRECTED]-(p:Person) where n.released> {from} and n.released < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':year_from,'to':year_to})
+    for dir in dirs:
+        data.append([dir["name"],dir["counts"]])
+    return Response(dumps(data), mimetype="application/json")
+
+
+@app.route("/get_last_career")
+def get_last_career():
+    db = get_db()
+    last_films=[]
+    last_film = db.run("match (p:Person)-[:ACTED_IN]-(n:Movie) return p.name, collect(n.title)[-1] as last_f")
+    for film in last_film:
+        last_films.append(film["last_f"])
+    last_films = db.run("with {data} as films unwind (films) as film return film as film,count(film) as count order by count desc limit 5",{'data':last_films})
+    data =[]
+    for film in last_films:
+            data.append([film["film"],film["count"]])
+    return Response(dumps(data), mimetype="application/json")
+
+
+@app.route("/get_act_max_film_genre")
+def get_act_max_film_genre():
+    genre = request.args["genre"]
+    db = get_db()
+    data=[]
+    acts = db.run("match (n)-[r:ACTED_IN]-(p:Person) where n.genre contains {genre} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'genre':genre})
+    for act in acts:
+        data.append([act["name"],act["counts"]])
+    return Response(dumps(data), mimetype="application/json")
+
+@app.route("/get_dir_max_film_genre")
+def get_dir_max_film_genre():
+    genre = request.args["genre"]
+    db = get_db()
+    data=[]
+    dirs = db.run("match (n)-[r:DIRECTED]-(p:Person) where n.genre contains {genre} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'genre':genre})
+    for dir in dirs:
+        data.append([dir["name"],dir["counts"]])
+    return Response(dumps(data), mimetype="application/json")
+
+
+@app.route("/get_orig_perc_time")
+def get_orig_perc_time():
+    year_from = request.args["year_from"]
+    year_to= request.args["year_to"]
+    db = get_db()
+    data=[]
+    percs = db.run("match (n:Movie) WHERE n.released> {from} and n.released < {to} with count(n) as total match (l:Movie) WHERE l.released> {from} and l.released < {to} return l.origin as origin, tofloat(100.00*count(l)/total) as perc order by perc desc",{'from':year_from,'to':year_to})
+    for perc in percs:
+        data.append([perc["origin"],perc["perc"]])
+    return Response(dumps(data), mimetype="application/json")
+
+@app.route("/plot_analys")
+def get_plot_analys_page():
+    return render_template("plot_analys.html")
