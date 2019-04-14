@@ -5,6 +5,7 @@
 {% block css %}
 <link rel="stylesheet" href="/static/css/plot_analys.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="/static/css/load_animation2.css">
 {% endblock %}
 {% block for_graph %}
 
@@ -27,41 +28,76 @@
 </div>
 
 <div  class='w3-margin-top'>
-	<table id="words_for_dir" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
+	<div>
+		<table id="words_for_dir" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
 
-		<caption>Список любимых слов в сюжетах выбранного режисера</caption>
+			<caption>Список любимых слов в сюжетах выбранного режисера</caption>
 
 
-		<thead>
-			<tr class="w3-light-grey">
-				<th>Слова</th>
-				<th>Кол-во</th>
-			</tr>
-		</thead>
-		<tbody id="tbody_dir_plot">
+			<thead>
+				<tr class="w3-light-grey">
+					<th>Слова</th>
+					<th>Кол-во</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_dir_plot">
 
-		</tbody>
-	</table>
-	<table id="words_for_genre" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
-		<caption>Список любимых слов в сюжетах фильмов выбранного жанра</caption>
-		<thead>
-		<th>Слова</th>
-		<th>Кол-во</th>
-		</thead>
-		<tbody id="tbody_genre_plot">
+			</tbody>
+		</table>
+	</div>
+	<div id="cube-loader" class="words_for_dir">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+	</div>
+	<div>
+		<table id="words_for_genre" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
+			<caption>Список любимых слов в сюжетах фильмов выбранного жанра</caption>
+			<thead>
+			<th>Слова</th>
+			<th>Кол-во</th>
+			</thead>
+			<tbody id="tbody_genre_plot">
 
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
+	<div id="cube-loader" class="words_for_genre">
+		<div class="caption">
+			<div class="cube-loader">
+				<div class="cube loader-1"></div>
+				<div class="cube loader-2"></div>
+				<div class="cube loader-4"></div>
+				<div class="cube loader-3"></div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<table id="universal_words" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
+			<caption>Список слов, присущих сюжетам каждого жанра</caption>
+			<thead>
+			<th>Слова</th>
+			<th>Кол-во</th>
+			</thead>
+			<tbody id="tbody_universal_words">
 
-	<table id="universal_words" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
-		<caption>Список слов, присущих сюжетам каждого жанра</caption>
-		<thead>
-		<th>Слова</th>
-		<th>Кол-во</th>
-		</thead>
-		<tbody id="tbody_universal_words">
-
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
+	<div id="cube-loader" class="universal_words">
+		<div class="caption">
+			<div class="cube-loader">
+				<div class="cube loader-1"></div>
+				<div class="cube loader-2"></div>
+				<div class="cube loader-4"></div>
+				<div class="cube loader-3"></div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

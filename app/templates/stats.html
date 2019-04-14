@@ -6,6 +6,7 @@
 {% block css %}
 <link rel="stylesheet" href="/static/css/stats.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="/static/css/load_animation2.css">
 {% endblock %}
 {% block for_graph %}
 
@@ -45,11 +46,71 @@
 			<button id = 'genres_but' class = ' w3-button w3-black w3-hover-white w3-round' type="submit">Show</button>
 		</div>
 	</div>
+	<div id="cube-loader" class="myChart">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
 	<canvas id="myChart" class = 'w3-margin-top' style="float: left; position: absolute; top: 450px; left: 50px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
+	<div id="cube-loader" class="myChart2">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
 	<canvas id="myChart2" class = 'w3-margin-top' style="float: left; position: absolute; top: 120px; left: 700px; border-top:2px solid #000000;border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
-    <canvas id="myChart3" class = 'w3-margin-top' style="float: left; position: absolute; top: 120px; left: 50px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
-    <canvas id="myChart4" class = 'w3-margin-top' style="float: left; position: absolute; top: 450px; left: 700px; border-top:2px solid #000000; border-bottom:2px solid #000000;  max-height: 600px !important; max-width: 600px;"></canvas>
-    <canvas id="myChart5" class = 'w3-margin-top' style="float: left; position: absolute; top: 880px; bottom: 50px; left: 50px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
-    <canvas id="myChart6" class = 'w3-margin-top' style="float: left; position: absolute; top: 880px; bottom: 50px; left: 700px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
+    <div id="cube-loader" class="myChart3">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
+	<canvas id="myChart3" class = 'w3-margin-top' style="float: left; position: absolute; top: 120px; left: 50px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
+    <div id="cube-loader" class="myChart4">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
+	<canvas id="myChart4" class = 'w3-margin-top' style="float: left; position: absolute; top: 450px; left: 700px; border-top:2px solid #000000; border-bottom:2px solid #000000;  max-height: 600px !important; max-width: 600px;"></canvas>
+    <div id="cube-loader" class="myChart5">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
+	<canvas id="myChart5" class = 'w3-margin-top' style="float: left; position: absolute; top: 880px; bottom: 50px; left: 50px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
+    <div id="cube-loader" class="myChart6">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
+	<canvas id="myChart6" class = 'w3-margin-top' style="float: left; position: absolute; top: 880px; bottom: 50px; left: 700px; border-top:2px solid #000000; border-bottom:2px solid #000000; max-height: 600px !important; max-width: 600px;"></canvas>
 </div>
 {% endblock %}
