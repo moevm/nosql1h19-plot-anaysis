@@ -68,7 +68,7 @@ def get_graph():
     db = get_db()
     results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie,m.wiki as wiki, collect(a.name) as cast "
-             "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
+             "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
     nodes = []
     rels = []
     i = 0
@@ -94,7 +94,7 @@ def get_graph_dir():
     db = get_db()
     results = db.run("MATCH (m:Movie)<-[:DIRECTED]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast "
-             "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
+             "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
     nodes = []
     rels = []
     i = 0
