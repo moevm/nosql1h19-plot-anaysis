@@ -5,11 +5,15 @@
 {% endblock %}
 {% block css %}
 	<link rel="stylesheet" href="/static/css/act_graph.css">
+	<link rel="stylesheet" href="/static/css/graph_legend.css">
 {% endblock %}
 {% block for_graph %}
 	<div id="graph">
 	</div>
 {% endblock %}
 {% block content %}
-
+<div id="graph-legend">
+    <div class="sphere yellow"></div> <b>Movies</b>
+    <div class="sphere green"></div> <b>Actors</b>
+</div>
 {% endblock %}
