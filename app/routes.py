@@ -68,7 +68,7 @@ def get_graph():
     db = get_db()
     results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie,m.wiki as wiki, collect(a.name) as cast "
-             "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
+             "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
     nodes = []
     rels = []
     i = 0
@@ -94,7 +94,7 @@ def get_graph_dir():
     db = get_db()
     results = db.run("MATCH (m:Movie)<-[:DIRECTED]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast "
-             "LIMIT {limit}", {"limit": request.args.get("limit", 100)})
+             "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
     nodes = []
     rels = []
     i = 0
@@ -181,7 +181,7 @@ def export_graph_data():
         print('Создать директорию %s не удалось' % path)
     else:
         print('Успешно создана директория %s ' % path)
-    print(os.getcwd())
+
     db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query":movies_data,"path": os.getcwd() + "/export/movies.csv"})
 
     return send_from_directory(os.getcwd() + '/export', 'movies.csv', as_attachment=True, mimetype='text/csv', attachment_filename='movies.csv')

@@ -4,6 +4,7 @@
 {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="/static/css/plot_analys.css">
+<link rel="stylesheet" href="/static/css/load_animation2.css">
 {% endblock %}
 {% block for_graph %}
 
@@ -15,15 +16,27 @@
     {% endfor %}
 </select>
 <button id = 'directors_but_plot' type="submit">Бех</button>
-<table id="words_for_dir">
-    <thead>
-        <th>Слова</th>
-        <th>Кол-во</th>
-    </thead>
-    <tbody id="tbody_dir_plot">
 
-    </tbody>
-</table>
+<div>
+    <table id="words_for_dir">
+        <thead>
+            <th>Слова</th>
+            <th>Кол-во</th>
+        </thead>
+        <tbody id="tbody_dir_plot">
+        </tbody>
+    </table>
+</div>
+<div id="cube-loader" class="words_for_dir">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+</div>
 
 <select id="plot_genres">
     {% for genre in genres %}
@@ -31,23 +44,45 @@
     {% endfor %}
 </select>
 <button id = 'genres_but_plot' type="submit">Бех</button>
-<table id="words_for_genre">
-    <thead>
-    <th>Слова</th>
-    <th>Кол-во</th>
-    </thead>
-    <tbody id="tbody_genre_plot">
 
-    </tbody>
-</table>
+<div>
+    <table id="words_for_genre">
+        <thead>
+            <th>Слова</th>
+            <th>Кол-во</th>
+        </thead>
+        <tbody id="tbody_genre_plot">
+        </tbody>
+    </table>
+</div>
+<div id="cube-loader" class="words_for_genre">
+    <div class="caption">
+        <div class="cube-loader">
+            <div class="cube loader-1"></div>
+            <div class="cube loader-2"></div>
+            <div class="cube loader-4"></div>
+            <div class="cube loader-3"></div>
+        </div>
+    </div>
+</div>
 
 <table id="universal_words">
     <thead>
-    <th>Слова</th>
-    <th>Кол-во</th>
+        <th>Слова</th>
+        <th>Кол-во</th>
     </thead>
     <tbody id="tbody_universal_words">
 
     </tbody>
 </table>
+<div id="cube-loader" class="universal_words">
+    <div class="caption">
+        <div class="cube-loader">
+            <div class="cube loader-1"></div>
+            <div class="cube loader-2"></div>
+            <div class="cube loader-4"></div>
+            <div class="cube loader-3"></div>
+        </div>
+    </div>
+</div>
 {% endblock %}

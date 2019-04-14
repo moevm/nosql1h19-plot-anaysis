@@ -5,6 +5,7 @@
 {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="/static/css/stats.css">
+<link rel="stylesheet" href="/static/css/load_animation2.css">
 {% endblock %}
 {% block for_graph %}
 
@@ -28,11 +29,77 @@
         {% endfor %}
     </select>
     <button id = 'genres_but' type="submit">Бух</button>
+
+    <div id="cube-loader" class="myChart">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart" style="max-height: 300px !important; max-width: 300px;"></canvas>
+    
+    <div id="cube-loader" class="myChart2">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart2" style="max-height: 300px !important; max-width: 300px;"></canvas>
+
+    <div id="cube-loader" class="myChart3">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart3" style="max-height: 700px !important; max-width: 700px;"></canvas>
+
+    <div id="cube-loader" class="myChart4">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart4" style="max-height: 300px !important; max-width: 300px;"></canvas>
+
+    <div id="cube-loader" class="myChart5">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart5" style="max-height: 300px !important; max-width: 300px;"></canvas>
+
+    <div id="cube-loader" class="myChart6">
+        <div class="caption">
+            <div class="cube-loader">
+                <div class="cube loader-1"></div>
+                <div class="cube loader-2"></div>
+                <div class="cube loader-4"></div>
+                <div class="cube loader-3"></div>
+            </div>
+        </div>
+    </div>
     <canvas id="myChart6" style="max-height: 300px !important; max-width: 300px;"></canvas>
 </div>
 {% endblock %}

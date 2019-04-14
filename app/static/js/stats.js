@@ -20,15 +20,20 @@ $(document).ready(function(){
     $("#years_but").click(get_stats_time);
     $("#genres_but").click(get_stats_genre);
 
+
     function get_stats_time(){
         get_act_max_film_time();
         get_dir_max_film_time();
         get_orig_perc_time()
     }
+
+
     function get_stats_genre(){
         get_dir_max_film_genre();
         get_act_max_film_genre();
     }
+
+
     setInterval(function () {
         if ($('#years_from').val() >= $('#years_to').val()){
             $('#years_but').prop('disabled', true);
@@ -37,11 +42,19 @@ $(document).ready(function(){
             $('#years_but').prop('disabled', false);
         }
     },100);
+
+
     function get_act_max_film_time() {
+        $("#myChart").css('display', 'none');
+        $("#cube-loader.myChart").css('display', 'block');
+
         $.get('/get_act_max_film_time', {
             year_from: $('#years_from').val(),
             year_to: $('#years_to').val()
         }, function (data) {
+            $("#myChart").css('display', 'block');
+            $("#cube-loader.myChart").css('display', 'none');
+
             myChart1.destroy()
             let labels = []
             let values = []
@@ -49,15 +62,23 @@ $(document).ready(function(){
                 labels.push(data[i][0])
                 values.push(data[i][1])
             }
-            myChart1 = chart(ctx1, 'horizontalBar', labels, 'Кол-во фильмов с актёром за выбранный периож', values);
+            myChart1 = chart(ctx1, 'horizontalBar', labels, 'Кол-во фильмов с актёром за выбранный период', values);
 
         });
     }
+
+
     function get_dir_max_film_time() {
+        $("#myChart2").css('display', 'none');
+        $("#cube-loader.myChart2").css('display', 'block');
+
         $.get('/get_dir_max_film_time', {
             year_from: $('#years_from').val(),
             year_to: $('#years_to').val()
         }, function (data) {
+            $("#myChart2").css('display', 'block');
+            $("#cube-loader.myChart2").css('display', 'none');
+
             myChart2.destroy()
             let labels = []
             let values = []
@@ -69,11 +90,18 @@ $(document).ready(function(){
         });
     }
 
+
     function get_orig_perc_time() {
+        $("#myChart3").css('display', 'none');
+        $("#cube-loader.myChart3").css('display', 'block');
+
         $.get('/get_orig_perc_time', {
             year_from: $('#years_from').val(),
             year_to: $('#years_to').val()
         }, function (data) {
+            $("#myChart3").css('display', 'block');
+            $("#cube-loader.myChart3").css('display', 'none');
+
             myChart3.destroy()
             let labels = []
             let values = []
@@ -81,12 +109,25 @@ $(document).ready(function(){
                 labels.push(data[i][0])
                 values.push(data[i][1])
             }
-            myChart3 = chart(ctx3, 'pie', labels, 'Процент фильмов за выбранный период', values);
+            if (labels.length && values.length) {
+                myChart3 = chart(ctx3, 'pie', labels, 'Процент фильмов за выбранный период', values, 'Процент фильмов за выбранный период');
+            } else {
+                ctx3.fillStyle = "#00F";
+                ctx3.font = "italic 10pt Arial";
+                ctx3.fillText("Фильмы за выбранный период отсутствуют", 20, 50);
+            }
         });
     }
 
+
     function get_last_career() {
+        $("#myChart4").css('display', 'none');
+        $("#cube-loader.myChart4").css('display', 'block');
+
         $.get('/get_last_career', function (data) {
+            $("#myChart4").css('display', 'block');
+            $("#cube-loader.myChart4").css('display', 'none');
+
             myChart4.destroy()
             let labels = []
             let values = []
@@ -97,10 +138,18 @@ $(document).ready(function(){
             myChart4 = chart(ctx4, 'horizontalBar', labels, 'Кол-во актёров, закончивших карьеру на фильме', values);
         });
     }
+    
+
     function get_act_max_film_genre() {
+        $("#myChart5").css('display', 'none');
+        $("#cube-loader.myChart5").css('display', 'block');
+
         $.get('/get_act_max_film_genre', {
             genre: $('#genres').val()
         }, function (data) {
+            $("#myChart5").css('display', 'block');
+            $("#cube-loader.myChart5").css('display', 'none');
+
             myChart5.destroy()
             let labels = []
             let values = []
@@ -111,10 +160,18 @@ $(document).ready(function(){
             myChart5 = chart(ctx5, 'horizontalBar', labels, 'Кол-во фильмов с актёром в выбранном жанре', values);
         });
     }
+    
+
     function get_dir_max_film_genre() {
+        $("#myChart6").css('display', 'none');
+        $("#cube-loader.myChart6").css('display', 'block');
+
         $.get('/get_dir_max_film_genre', {
             genre: $('#genres').val()
         }, function (data) {
+            $("#myChart6").css('display', 'block');
+            $("#cube-loader.myChart6").css('display', 'none');
+
             myChart6.destroy()
             let labels = []
             let values = []
@@ -126,7 +183,8 @@ $(document).ready(function(){
         });
     }
 
-    function chart(ctx,type,labels,label,values) {
+
+    function chart(ctx,type,labels,label,values, title) {
         let myChart = new Chart(ctx, {
             type: type,
             data: {
@@ -153,7 +211,12 @@ $(document).ready(function(){
                     borderWidth: 1
                 }]
             },
-            options: {}
+            options: {
+                title: {
+                    display: Boolean(title),
+                    text: title
+                }
+            }
         });
         return myChart;
     }

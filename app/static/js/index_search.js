@@ -19,7 +19,7 @@ $(function () {
                 var t = $("table#results tbody").empty();
                 if (!data || data.length == 0) return;
                 data.forEach(function (movie) {
-                    $("<tr><td class='movie'>" + movie.title + "</td><td>" + movie.released + "</td><td>" + movie.origin + "</td><td>" + movie.genre + "</td></tr>").appendTo(t)
+                    $("<tr style='cursor: pointer'><td class='movie'>" + movie.title + "</td><td>" + movie.released + "</td><td>" + movie.origin + "</td><td>" + movie.genre + "</td></tr>").appendTo(t)
                         .click(function() { showMovie($(this).find("td.movie").text());})
                 });
                 showMovie(data[0].title);

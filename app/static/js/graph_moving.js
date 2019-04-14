@@ -1,17 +1,21 @@
 
 $(document).ready(function(){
-    var change_size=2000;
+    var change_size = 2000;
     var vbox_x = -300;
     var vbox_y = -300;
     $('svg').bind('mousewheel', function(e){
         if(e.originalEvent.wheelDelta /120 > 0) {
             //console.log('scrolling up !'+change_size);
             if (change_size > 200)
-                change_size-=100;
+                change_size -= 150;
+                vbox_x += 75;
+                vbox_y += 30;
         }
         else{
             //console.log('scrolling down !'+change_size);
-            change_size+=100;
+            change_size += 150;
+            vbox_x -= 75;
+            vbox_y -= 30;
         }
         $('svg').attr('viewBox',`${vbox_x} ${vbox_y} ${change_size} ${change_size}`)
     });
@@ -28,4 +32,14 @@ $(document).ready(function(){
         //console.log('wke!');
         document.onmousemove = null
     });
+
+
+
+
+    $('#zoom-out-btn').on('click', function() {
+        change_size = 5000
+        vbox_x = -2000;
+        vbox_y = -800;
+        $('svg').attr('viewBox',`${vbox_x} ${vbox_y} ${change_size} ${change_size}`)
+    })
 });
