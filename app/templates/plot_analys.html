@@ -9,5 +9,45 @@
 
 {% endblock %}
 {% block content %}
+<select id="plot_directors">
+    {% for dir in dirs %}
+    <option value='{{dir}}'>{{dir}}</option>
+    {% endfor %}
+</select>
+<button id = 'directors_but_plot' type="submit">Бех</button>
+<table id="words_for_dir">
+    <thead>
+        <th>Слова</th>
+        <th>Кол-во</th>
+    </thead>
+    <tbody id="tbody_dir_plot">
 
+    </tbody>
+</table>
+
+<select id="plot_genres">
+    {% for genre in genres %}
+    <option value='{{genre}}'>{{genre}}</option>
+    {% endfor %}
+</select>
+<button id = 'genres_but_plot' type="submit">Бех</button>
+<table id="words_for_genre">
+    <thead>
+    <th>Слова</th>
+    <th>Кол-во</th>
+    </thead>
+    <tbody id="tbody_genre_plot">
+
+    </tbody>
+</table>
+
+<table id="universal_words">
+    <thead>
+    <th>Слова</th>
+    <th>Кол-во</th>
+    </thead>
+    <tbody id="tbody_universal_words">
+
+    </tbody>
+</table>
 {% endblock %}
