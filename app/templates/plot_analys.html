@@ -4,85 +4,64 @@
 {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="/static/css/plot_analys.css">
-<link rel="stylesheet" href="/static/css/load_animation2.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 {% block for_graph %}
 
 {% endblock %}
 {% block content %}
-<select id="plot_directors">
-    {% for dir in dirs %}
-    <option value='{{dir}}'>{{dir}}</option>
-    {% endfor %}
-</select>
-<button id = 'directors_but_plot' type="submit">Бех</button>
-
-<div>
-    <table id="words_for_dir">
-        <thead>
-            <th>Слова</th>
-            <th>Кол-во</th>
-        </thead>
-        <tbody id="tbody_dir_plot">
-        </tbody>
-    </table>
-</div>
-<div id="cube-loader" class="words_for_dir">
-        <div class="caption">
-            <div class="cube-loader">
-                <div class="cube loader-1"></div>
-                <div class="cube loader-2"></div>
-                <div class="cube loader-4"></div>
-                <div class="cube loader-3"></div>
-            </div>
-        </div>
-</div>
-
-<select id="plot_genres">
+<div class="w3-margin-left">
+	<label for="plot_directors">Choose director or genre</label>
+	<select class = 'w3-margin-left' id="plot_directors" style= 'position:absolute left:10px; height: 38px;'>
+		{% for dir in dirs %}
+		<option value='{{dir}}'>{{dir}}</option>
+		{% endfor %}
+	</select>
+	<button id = 'directors_but_plot' class = 'w3-margin-left w3-button w3-black w3-hover-white w3-round' style= 'position:absolute;' type="submit">Show</button>
+	<select class = 'w3-margin-left' id="plot_genres" style= 'position:absolute; left: 550px; height: 38px;'>
     {% for genre in genres %}
     <option value='{{genre}}'>{{genre}}</option>
     {% endfor %}
-</select>
-<button id = 'genres_but_plot' type="submit">Бех</button>
-
-<div>
-    <table id="words_for_genre">
-        <thead>
-            <th>Слова</th>
-            <th>Кол-во</th>
-        </thead>
-        <tbody id="tbody_genre_plot">
-        </tbody>
-    </table>
-</div>
-<div id="cube-loader" class="words_for_genre">
-    <div class="caption">
-        <div class="cube-loader">
-            <div class="cube loader-1"></div>
-            <div class="cube loader-2"></div>
-            <div class="cube loader-4"></div>
-            <div class="cube loader-3"></div>
-        </div>
-    </div>
+	</select>
+	<button id = 'genres_but_plot' class = 'w3-margin-left w3-button w3-black w3-hover-white w3-round' style= 'position:absolute; left: 705px;' type="submit">Show</button>
 </div>
 
-<table id="universal_words">
-    <thead>
-        <th>Слова</th>
-        <th>Кол-во</th>
-    </thead>
-    <tbody id="tbody_universal_words">
+<div  class='w3-margin-top'>
+	<table id="words_for_dir" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
 
-    </tbody>
-</table>
-<div id="cube-loader" class="universal_words">
-    <div class="caption">
-        <div class="cube-loader">
-            <div class="cube loader-1"></div>
-            <div class="cube loader-2"></div>
-            <div class="cube loader-4"></div>
-            <div class="cube loader-3"></div>
-        </div>
-    </div>
+		<caption>Список любимых слов в сюжетах выбранного режисера</caption>
+
+
+		<thead>
+			<tr class="w3-light-grey">
+				<th>Слова</th>
+				<th>Кол-во</th>
+			</tr>
+		</thead>
+		<tbody id="tbody_dir_plot">
+
+		</tbody>
+	</table>
+	<table id="words_for_genre" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
+		<caption>Список любимых слов в сюжетах фильмов выбранного жанра</caption>
+		<thead>
+		<th>Слова</th>
+		<th>Кол-во</th>
+		</thead>
+		<tbody id="tbody_genre_plot">
+
+		</tbody>
+	</table>
+
+	<table id="universal_words" class="w3-table-all w3-hoverable w3-margin-left" style="width: 300px; float: left;">
+		<caption>Список слов, присущих сюжетам каждого жанра</caption>
+		<thead>
+		<th>Слова</th>
+		<th>Кол-во</th>
+		</thead>
+		<tbody id="tbody_universal_words">
+
+		</tbody>
+	</table>
 </div>
 {% endblock %}
