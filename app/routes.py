@@ -181,7 +181,7 @@ def export_graph_data():
         print('Создать директорию %s не удалось' % path)
     else:
         print('Успешно создана директория %s ' % path)
-    print(os.getcwd())
+
     db.run("CALL apoc.export.csv.query({query}, {path},  null)", {"query":movies_data,"path": os.getcwd() + "/export/movies.csv"})
 
     return send_from_directory(os.getcwd() + '/export', 'movies.csv', as_attachment=True, mimetype='text/csv', attachment_filename='movies.csv')
