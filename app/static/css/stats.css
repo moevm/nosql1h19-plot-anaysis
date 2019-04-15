@@ -1,0 +1,38 @@
+#myChart1, #myChart2, #myChart3, #myChart4, #myChart5, #myChart6,.myChart1,.myChart2,.myChart3,.myChart4,
+.myChart5,.myChart6{
+    float: left;
+    position: absolute;
+    border-top:2px solid #000000;
+    border-bottom:2px solid #000000;
+    max-height: 600px !important;
+    max-width: 600px;
+}
+#myChart1, .myChart1{
+    top: 450px;
+    left: 50px;
+}
+#myChart2, .myChart2{
+    top: 120px;
+    left: 700px;
+}
+#myChart3, .myChart3{
+    top: 120px;
+    left: 50px;
+}
+
+#myChart4, .myChart4{
+    top: 450px;
+    left: 700px;
+}
+
+#myChart5, .myChart5{
+    top: 880px;
+    bottom: 50px;
+    left: 50px;
+}
+
+#myChart6, .myChart6{
+    top: 880px;
+    bottom: 50px;
+    left: 700px;
+}
