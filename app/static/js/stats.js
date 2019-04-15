@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    let ctx1 = document.getElementById('myChart').getContext('2d');
+    let ctx1 = document.getElementById('myChart1').getContext('2d');
     let ctx2 = document.getElementById('myChart2').getContext('2d');
     let ctx3 = document.getElementById('myChart3').getContext('2d');
     let ctx4 = document.getElementById('myChart4').getContext('2d');
@@ -45,15 +45,15 @@ $(document).ready(function(){
 
 
     function get_act_max_film_time() {
-        $("#myChart").css('display', 'none');
-        $("#cube-loader.myChart").css('display', 'block');
+        $("#myChart1").css('display', 'none');
+        $("#cube-loader.myChart1").css('display', 'block');
 
         $.get('/get_act_max_film_time', {
             year_from: $('#years_from').val(),
             year_to: $('#years_to').val()
         }, function (data) {
-            $("#myChart").css('display', 'block');
-            $("#cube-loader.myChart").css('display', 'none');
+            $("#myChart1").css('display', 'block');
+            $("#cube-loader.myChart1").css('display', 'none');
 
             myChart1.destroy()
             let labels = []

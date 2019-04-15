@@ -1,0 +1,38 @@
+th {
+    width: 150px;
+}
+
+#words_for_dir, .words_for_dir{
+    width: 300px;
+    float: left;
+}
+
+#words_for_genre,.words_for_genre{
+    width: 300px;
+    float: left;
+}
+
+#universal_words, .universal_words{
+    width: 300px;
+    float: left;
+}
+
+#plot_directors{
+    position:absolute left:10px;
+    height: 38px;
+}
+
+#directors_but_plot{
+    position:absolute;
+}
+
+#plot_genres{
+    position:absolute;
+    left: 550px;
+    height: 38px;
+}
+
+#genres_but_plot{
+    position:absolute;
+    left: 705px;
+}
