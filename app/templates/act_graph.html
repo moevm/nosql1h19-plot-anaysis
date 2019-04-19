@@ -2,10 +2,12 @@
 {% block js %}
 <script type="text/javascript" src = "/static/js/act_graph.js"></script>
 <script type="text/javascript" src = "/static/js/graph_moving.js"></script>
+<script type="text/javascript" src = "/static/js/menu_components.js"></script>
 {% endblock %}
 {% block css %}
 	<link rel="stylesheet" href="/static/css/act_graph.css">
 	<link rel="stylesheet" href="/static/css/graph_legend.css">
+	<link rel="stylesheet" href="/static/css/menu_components.css">
 {% endblock %}
 {% block for_graph %}
 	<div id="graph">
@@ -16,5 +18,13 @@
     <div class="sphere yellow"></div> <b>Movies</b>
     <div class="sphere green"></div> <b>Actors</b>
 </div>
-<div style="position:absolute;right:0;top:50;cursor: pointer"><i id="zoom-out-btn" class="material-icons" style="font-size: 80px">zoom_out</i></div>
+<div style="position:absolute;right:0;top:50px;cursor: pointer"><i id="zoom-out-btn" class="material-icons" style="font-size: 80px">zoom_out</i></div>
+<div class="butt_menu_components"> kek</div>
+<div class="container solo_components_menu">
+	<div id="count_comps_act"></div>
+	<button id = "butt_comps" disabled>Show first</button>
+	<button id="butt_prev_comp_act" style="display: none"> Prev</button>
+	<button id="butt_next_comp_act" style="display: none"> Next</button>
+	<button id="butt_all_again" style="display: none"> Return</button>
+</div>
 {% endblock %}
