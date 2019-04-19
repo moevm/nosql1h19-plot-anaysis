@@ -1,0 +1,21 @@
+
+.solo_components_menu{
+    position:absolute;
+    border: 1px solid #000000;
+    right:0;
+    top:150px;
+    margin-right: -300px;
+    background-color: white;
+    width: 300px;
+    height:400px;
+}
+.butt_menu_components{
+    position:absolute;
+    right:0;
+    top:150px;
+    width: 30px;
+    height:400px;
+    border-radius: 15px 0px 0px 15px;
+    background-color: black;
+    color: white;
+}

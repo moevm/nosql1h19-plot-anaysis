@@ -69,25 +69,9 @@ def get_graph():
     results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie,m.wiki as wiki, collect(a.name) as cast "
              "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
-    nodes = []
-    rels = []
-    i = 0
-    for record in results:
-        nodes.append({"title": record["movie"], "label": "movie","wiki":record["wiki"]})
-        target = i
-        i += 1
-        for name in record['cast']:
-            actor = {"title": name, "label": "actor"}
-            try:
-                source = nodes.index(actor)
-            except ValueError:
-                nodes.append(actor)
-                source = i
-                i += 1
-            rels.append({"source": source, "target": target})
+    nodes,rels = for_graph(results,'actor')
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
-
 
 @app.route("/graph_dir")
 def get_graph_dir():
@@ -95,22 +79,7 @@ def get_graph_dir():
     results = db.run("MATCH (m:Movie)<-[:DIRECTED]-(a:Person) WHERE a.name<>'Unknown'"
              "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast "
              "LIMIT {limit}", {"limit": request.args.get("limit", 200)})
-    nodes = []
-    rels = []
-    i = 0
-    for record in results:
-        nodes.append({"title": record["movie"], "label": "movie","wiki":record["wiki"]})
-        target = i
-        i += 1
-        for name in record['cast']:
-            director = {"title": name, "label": "director"}
-            try:
-                source = nodes.index(director)
-            except ValueError:
-                nodes.append(director)
-                source = i
-                i += 1
-            rels.append({"source": source, "target": target})
+    nodes,rels = for_graph(results,'director')
     return Response(dumps({"nodes": nodes, "links": rels}),
                     mimetype="application/json")
 
@@ -204,7 +173,7 @@ def get_act_max_film_time():
     year_to= request.args["year_to"]
     db = get_db()
     data=[]
-    acts = db.run("match (n)-[r:ACTED_IN]-(p:Person) where n.released> {from} and n.released < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':year_from,'to':year_to})
+    acts = db.run("match (n)-[r:ACTED_IN]-(p:Person) where toInteger(n.released) >= {from} and toInteger(n.released) < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':int(year_from),'to':int(year_to)})
     for act in acts:
         data.append([act["name"],act["counts"]])
     return Response(dumps(data), mimetype="application/json")
@@ -215,7 +184,7 @@ def get_dir_max_film_time():
     year_to= request.args["year_to"]
     db = get_db()
     data=[]
-    dirs = db.run("match (n)-[r:DIRECTED]-(p:Person) where n.released> {from} and n.released < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':year_from,'to':year_to})
+    dirs = db.run("match (n)-[r:DIRECTED]-(p:Person) where toInteger(n.released) >= {from} and toInteger(n.released) < {to} and p.name <> 'Unknown' return p.name as name,count(r) as counts order by counts desc limit 5",{'from':int(year_from),'to':int(year_to)})
     for dir in dirs:
         data.append([dir["name"],dir["counts"]])
     return Response(dumps(data), mimetype="application/json")
@@ -262,7 +231,7 @@ def get_orig_perc_time():
     year_to= request.args["year_to"]
     db = get_db()
     data=[]
-    percs = db.run("match (n:Movie) WHERE n.released> {from} and n.released < {to} with count(n) as total match (l:Movie) WHERE l.released> {from} and l.released < {to} return l.origin as origin, tofloat(100.00*count(l)/total) as perc order by perc desc",{'from':year_from,'to':year_to})
+    percs = db.run("match (n:Movie) WHERE toInteger(n.released)>= toInteger({from}) and toInteger(n.released) < toInteger({to}) with count(n) as total match (l:Movie) WHERE toInteger(l.released) >= toInteger({from}) and toInteger(l.released) < toInteger({to}) return l.origin as origin, tofloat(100.00*count(l)/total) as perc order by perc desc",{'from':year_from,'to':year_to})
     for perc in percs:
         data.append([perc["origin"],perc["perc"]])
     return Response(dumps(data), mimetype="application/json")
@@ -289,12 +258,11 @@ def get_table_plot_dir():
     stop_words = get_stop_words()
     db = get_db()
     data, words_with_count=[],[]
-    texts = db.run("match (n:Movie)-[:DIRECTED]-(p:Person) where p.name = {dir} return n.plot as plot",{'dir':dir})
+    texts = db.run("match (n:Movie)-[:DIRECTED]-(p:Person) where p.name = {dir} return split(toLower(n.plot),' ') as plot",{'dir':dir})
     for text in texts:
-        tokens = text['plot'].replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','').lower().split()
-        tokens = [token for token in tokens if token not in stop_words and token != ' ' and token.strip() not in punctuation]
+        tokens = [token for token in text['plot'] if token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','') not in stop_words and token != ' ']
         for token in tokens:
-            data.append(token)
+            data.append(token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';',''))
     words = db.run('with {data} as words unwind (words) as word return word as word,count(word) as count order by count desc limit 25',{'data':data})
     for word in words:
         words_with_count.append([word["word"],word["count"]])
@@ -306,12 +274,11 @@ def get_table_plot_genre():
     stop_words = get_stop_words()
     db = get_db()
     data, words_with_count=[],[]
-    texts = db.run("match (n:Movie) where n.genre contains {genre} return n.plot as plot",{'genre':genre})
+    texts = db.run("match (n:Movie) where n.genre contains {genre} return split(toLower(n.plot),' ') as plot",{'genre':genre})
     for text in texts:
-        tokens = text['plot'].replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','').lower().split()
-        tokens = [token for token in tokens if token not in stop_words and token != ' ' and token.strip() not in punctuation]
+        tokens = [token for token in text['plot'] if token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','') not in stop_words and token != ' ']
         for token in tokens:
-            data.append(token)
+            data.append(token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';',''))
     words = db.run('with {data} as words unwind (words) as word return word as word,count(word) as count order by count desc limit 25',{'data':data})
     for word in words:
         words_with_count.append([word["word"],word["count"]])
@@ -322,13 +289,71 @@ def get_table_universal_words():
     stop_words = get_stop_words()
     db = get_db()
     data, words_with_count=[],[]
-    texts = db.run("match (n:Movie) return n.plot as plot")
+    texts = db.run("match (n:Movie) return split(toLower(n.plot),' ') as plot")
     for text in texts:
-        tokens = text['plot'].replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','').lower().split()
-        tokens = [token for token in tokens if token not in stop_words and token != ' ' and token.strip() not in punctuation]
+        tokens = [token for token in text['plot'] if token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';','') not in stop_words and token != ' ']
         for token in tokens:
-            data.append(token)
+            data.append(token.replace('.','').replace(',','').replace('\"','').replace('\'',' ').replace(':','').replace(';',''))
     words = db.run('with {data} as words unwind (words) as word return word as word,count(word) as count order by count desc limit 25',{'data':data})
     for word in words:
         words_with_count.append([word["word"],word["count"]])
     return Response(dumps(words_with_count), mimetype="application/json")
+
+solo_comps_act = []
+@app.route("/count_components_act")
+def count_components_act():
+    db = get_db()
+    solo_comps_act.clear()
+    comps = db.run("call algo.unionFind.stream(null,'ACTED_IN',{}) yield nodeId, setId return distinct setId, collect(algo.getNodeById(nodeId).title) as fragId order by setId, fragId")
+    for comp in comps:
+        if len(comp['fragId'])>0:
+            solo_comps_act.append([comp['setId'],comp['fragId']])
+    return Response(dumps(len(solo_comps_act)), mimetype="application/json")
+
+@app.route("/components_show_act")
+def components_show_act():
+    comp_id = int(request.args["comp_id"])
+    db = get_db()
+    results = db.run("MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) WHERE a.name<>'Unknown' and m.title in {comps}"
+             "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast ", {'comps':solo_comps_act[comp_id][1]})
+    nodes,rels = for_graph(results,'actor')
+    return Response(dumps({"nodes": nodes, "links": rels}), mimetype="application/json")
+
+solo_comps_dir = []
+@app.route("/count_components_dir")
+def count_components_dir():
+    db = get_db()
+    solo_comps_dir.clear()
+    comps = db.run("call algo.unionFind.stream(null,'DIRECTED',{}) yield nodeId, setId return distinct setId, collect(algo.getNodeById(nodeId).title) as fragId order by setId, fragId")
+    for comp in comps:
+        if len(comp['fragId'])>0:
+            solo_comps_dir.append([comp['setId'],comp['fragId']])
+    return Response(dumps(len(solo_comps_dir)), mimetype="application/json")
+
+@app.route("/components_show_dir")
+def components_show_dir():
+    comp_id = int(request.args["comp_id"])
+    db = get_db()
+    results = db.run("MATCH (m:Movie)<-[:DIRECTED]-(a:Person) WHERE a.name<>'Unknown' and m.title in {comps}"
+             "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast ", {'comps':solo_comps_dir[comp_id][1]})
+    nodes,rels = for_graph(results,'director')
+    return Response(dumps({"nodes": nodes, "links": rels}), mimetype="application/json")
+
+def for_graph(results,label):
+    nodes = []
+    rels = []
+    i = 0
+    for record in results:
+        nodes.append({"title": record["movie"], "label": "movie","wiki":record["wiki"]})
+        target = i
+        i += 1
+        for name in record['cast']:
+            person = {"title": name, "label": label}
+            try:
+                source = nodes.index(person)
+            except ValueError:
+                nodes.append(person)
+                source = i
+                i += 1
+            rels.append({"source": source, "target": target})
+    return [nodes,rels]
