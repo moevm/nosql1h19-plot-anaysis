@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/static/css/act_graph.css">
 	<link rel="stylesheet" href="/static/css/graph_legend.css">
 	<link rel="stylesheet" href="/static/css/menu_components.css">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 {% block for_graph %}
 	<div id="graph">
@@ -19,12 +20,17 @@
     <div class="sphere green"></div> <b>Actors</b>
 </div>
 <div style="position:absolute;right:0;top:50px;cursor: pointer"><i id="zoom-out-btn" class="material-icons" style="font-size: 80px">zoom_out</i></div>
-<div class="butt_menu_components"> kek</div>
+<div class="butt_menu_components">
+	<p class="show">
+		Show
+	</p>
+</div>
 <div class="container solo_components_menu">
 	<div id="count_comps_act"></div>
-	<button id = "butt_comps" disabled>Show first</button>
-	<button id="butt_prev_comp_act" style="display: none"> Prev</button>
-	<button id="butt_next_comp_act" style="display: none"> Next</button>
-	<button id="butt_all_again" style="display: none"> Return</button>
+	<button class="w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id = "butt_comps" >Show first</button>
+	<button class="but1 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_prev_comp_act" style="display: none"> Prev</button>
+	<button class="but2 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_next_comp_act" style="display: none"> Next</button>
+	<button class="but3 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_all_again" style="display: none"> Return</button>
+
 </div>
 {% endblock %}
