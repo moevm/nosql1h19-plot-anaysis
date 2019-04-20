@@ -4,9 +4,9 @@
     border: 1px solid #000000;
     right:0;
     top:150px;
-    margin-right: -300px;
+    margin-right: -350px;
     background-color: white;
-    width: 300px;
+    width: 350px;
     height:400px;
 }
 .butt_menu_components{
@@ -19,3 +19,17 @@
     background-color: black;
     color: white;
 }
+.show{
+   writing-mode: tb-rl;
+   font-size:20px;
+   padding: 5px;
+   cursor: pointer
+}
+.but1,.but2,.but3 {
+	float: left;
+	margin:0 5px;
+	width: 75px;
+}
+
+
+	
