@@ -29,8 +29,16 @@
 	</p>
 </div>
 <div class="container solo_components_menu">
+	<label for="dirs_for_search">Choose director</label>
+	<select id="dirs_for_search" style= 'height: 38px;'>
+		{% for dir in directors %}
+		<option value={{dir}}>{{dir}}</option>
+		{% endfor %}
+	</select>
+	<button class="w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id = "but_search_directors" >Search</button>
+	<button class="w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id = "but_search_directors_return" style="display: none" >Return</button>
 	<div class="w3-margin-top w3-margin-left" id="count_comps_dir"></div>
-	<button class="but0 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id = "butt_comps">Show first</button>
+	<button class="but0 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id = "butt_comps" disabled>Show isolated component</button>
 	<button class="but1 fa fa-arrow-left w3-xxlarge w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id="butt_prev_comp_dir" style="display: none"> </button>
 	<button class="but3 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id="butt_all_again" style="display: none"> Return</button>
 	<button class="but2 fa fa-arrow-right w3-xxlarge w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left w3-border w3-border-black" id="butt_next_comp_dir" style="display: none"> </button>

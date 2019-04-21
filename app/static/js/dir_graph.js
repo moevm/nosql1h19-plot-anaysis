@@ -1,10 +1,32 @@
 $(document).ready(function(){
+
+    $("#but_search_directors").click(function (){
+        $("#butt_next_comp_dir").css("display",'none')
+        $("#butt_prev_comp_dir").css("display",'none')
+        $("#butt_all_again").css("display",'none')
+        $("#butt_comps").css("display",'block')
+        $("#but_search_directors_return").css("display",'block')
+        $("#but_search_directors").css("width",'85px')
+        show_this_director();
+    });
+    $("#but_search_directors_return").click(function (){
+        $("#butt_next_comp_dir").css("display",'none')
+        $("#butt_prev_comp_dir").css("display",'none')
+        $("#butt_all_again").css("display",'none')
+        $("#butt_comps").css("display",'block')
+        $("#but_search_directors_return").css("display",'none')
+        $("#but_search_directors").css("width",'200px')
+        show_all();
+    });
+
     $("#butt_comps").click(function () {
         show_comp_next()
         $("#butt_next_comp_dir").css("display",'block')
         $("#butt_prev_comp_dir").css("display",'block')
         $("#butt_all_again").css("display",'block')
         $("#butt_comps").css("display",'none')
+        $("#but_search_directors_return").css("display",'none')
+        $("#but_search_directors").css("width",'200px')
     });
     $("#butt_next_comp_dir").click(show_comp_next);
     $("#butt_prev_comp_dir").click(show_comp_prev);
@@ -15,6 +37,8 @@ $(document).ready(function(){
         $("#butt_prev_comp_dir").css("display",'none')
         $("#butt_all_again").css("display",'none')
         $("#butt_comps").css("display",'block')
+        $("#but_search_directors_return").css("display",'none')
+        $("#but_search_directors").css("width",'200px')
     });
     let comp_id = 0;
     let count_comps=1;
@@ -28,7 +52,7 @@ $(document).ready(function(){
 
     $.get('/count_components_dir', function (data) {
         count_comps=data;
-        $('#count_comps_dir').text("Quantity"+data);
+        $('#count_comps_dir').text("Quantity: "+data);
         $('#butt_comps').prop('disabled',false);
     });
 
@@ -60,6 +84,17 @@ $(document).ready(function(){
 
         d3.json("/graph_dir", function(error, graph) {
             if (error) return;
+            create_dir_graph(force,svg,graph);
+        });
+        mouswheel_bind();
+    }
+
+    function  show_this_director() {
+        d3.select("#graph").selectAll("*").remove()
+        var svg = d3.select("#graph").append("svg")
+            .attr('viewBox',`-300 -300 2000 2000`)
+            .attr("pointer-events", "all");
+        $.get('/specific_director_graph', {director: $('#dirs_for_search').val()}, function (graph) {
             create_dir_graph(force,svg,graph);
         });
         mouswheel_bind();
