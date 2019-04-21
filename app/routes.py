@@ -50,12 +50,22 @@ def serialize_cast(cast):
 
 @app.route("/act_graph")
 def get_act_graph():
-    return render_template("act_graph.html")
+    db = get_db()
+    actors=[]
+    tmp = db.run("match(n:Movie)-[:ACTED_IN]-(p:Person) WHERE p.name<>'Unknown' return distinct p.name as name order by name")
+    for act in tmp:
+        actors.append(act['name'])
+    return render_template("act_graph.html", actors=actors)
 
 
 @app.route("/dir_graph")
 def get_dir_graph():
-    return render_template("dir_graph.html")
+    db = get_db()
+    directors=[]
+    tmp = db.run("match(n:Movie)-[:DIRECTED]-(p:Person) WHERE p.name<>'Unknown' return distinct p.name as name order by name")
+    for dir in tmp:
+        directors.append(dir['name'])
+    return render_template("dir_graph.html", directors=directors)
 
 
 @app.route("/import_page")
@@ -357,3 +367,21 @@ def for_graph(results,label):
                 i += 1
             rels.append({"source": source, "target": target})
     return [nodes,rels]
+
+@app.route("/specific_actor_graph")
+def specific_actor_graph():
+    name = request.args["actor"]
+    db = get_db()
+    results = db.run("MATCH (m:Movie)-[:ACTED_IN]-(a:Person) WHERE a.name={name}"
+             "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast ", {'name':name})
+    nodes,rels = for_graph(results,'actor')
+    return Response(dumps({"nodes": nodes, "links": rels}), mimetype="application/json")
+
+@app.route("/specific_director_graph")
+def specific_director_graph():
+    name = request.args["director"]
+    db = get_db()
+    results = db.run("MATCH (m:Movie)-[:DIRECTED]-(a:Person) WHERE a.name={name}"
+             "RETURN m.title as movie, m.wiki as wiki, collect(a.name) as cast ", {'name':name})
+    nodes,rels = for_graph(results,'director')
+    return Response(dumps({"nodes": nodes, "links": rels}), mimetype="application/json")
