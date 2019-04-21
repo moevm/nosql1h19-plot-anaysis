@@ -4,20 +4,21 @@
     border: 1px solid #000000;
     right:0;
     top:150px;
-    margin-right: -350px;
+    margin-right: -200px;
     background-color: white;
-    width: 350px;
-    height:400px;
+    width: 200px;
+    height:300px;
 }
 .butt_menu_components{
     position:absolute;
     right:0;
     top:150px;
     width: 30px;
-    height:400px;
+    height:300px;
     border-radius: 15px 0px 0px 15px;
     background-color: black;
     color: white;
+	cursor: pointer
 }
 .show{
    writing-mode: tb-rl;
@@ -25,10 +26,11 @@
    padding: 5px;
    cursor: pointer
 }
-.but1,.but2,.but3 {
+.but0,.but1,.but2,.but3 {
 	float: left;
 	margin:0 5px;
-	width: 75px;
+	height: 60px;
+	width: 150px;
 }
 
 
