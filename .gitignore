@@ -1,3 +1,4 @@
 neo4j-movies/
 export/
 *.pyc
+import/

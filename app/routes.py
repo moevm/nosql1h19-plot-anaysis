@@ -1,7 +1,8 @@
 from string import punctuation
 import os
+import shutil
 from json import dumps
-from flask import Flask, g, Response, request, render_template, send_from_directory
+from flask import Flask, g, Response, request, render_template, send_from_directory, abort
 
 from neo4j import GraphDatabase, basic_auth
 
@@ -119,31 +120,60 @@ def get_movie(title):
                     mimetype="application/json")
 
 
-@app.route("/import")
+@app.route("/import", methods=['GET', 'POST'])
 def import_graph_data():
-    db = get_db()
-    db.run("MATCH ()-[r]->() DELETE r")
-    db.run("MATCH (n) DELETE n")
-    db.run(
-"load csv with headers from 'file:///wiki_movie_plots_deduped.csv' as line "
-"merge (n:Movie {title:line.Title, released:line.ReleaseYear, origin:line.Origin, genre:line.Genre, wiki:line.WikiPage, plot:line.Plot}) "
-"FOREACH (actor in split(line.Cast, ',') | "
-"merge (a:Person {name:replace(replace(replace(actor,'[',''),']',''),'\"','')}) merge (a)-[:ACTED_IN]->(n)) "
-"FOREACH (director in split(line.Director, ',') | "
-"FOREACH (dir in split(director,' and ') | "
-"merge (d:Person {name:replace(replace(replace(dir,'[',''),']',''),'\"','')}) merge (d)-[:DIRECTED]->(n)))"
-    )
-  
-    return Response(dumps({"message": "Import completed"}),
-                    mimetype="application/json")
+    if request.method == 'POST':
+        f = request.files.get('csv_import_file')
+        if f:
+            path = 'import'
+            try:
+                shutil.rmtree('./import')
+            except FileNotFoundError:
+                pass
+            try:
+                os.mkdir(path)
+            except OSError:
+                print('Создать директорию %s не удалось' % path)
+                abort(500)
+            else:
+                print('Успешно создана директория %s ' % path)
+
+            f.save(os.getcwd() + "/import/import.csv")
+
+            return Response(dumps({"message": "File Loaded"}),
+                            mimetype="application/json")
+        else:
+            abort(400)
+    else:
+        f_path = os.getcwd().replace("\\","/") + '/import/import.csv'
+        f_path = f_path.replace(' ', '%20')
+        db = get_db()
+        db.run("MATCH ()-[r]->() DELETE r")
+        db.run("MATCH (n) DELETE n")
+        db.run(
+        "load csv with headers from 'file:///{0}' as line ".format(f_path) +
+        "merge (n:Movie {title:line.Title, released:line.ReleaseYear, origin:line.Origin, genre:line.Genre, wiki:line.WikiPage, plot:line.Plot}) "
+        "FOREACH (actor in split(line.Cast, ',') | "
+        "merge (a:Person {name:replace(replace(replace(actor,'[',''),']',''),'\"','')}) merge (a)-[:ACTED_IN]->(n)) "
+        "FOREACH (director in split(line.Director, ',') | "
+        "FOREACH (dir in split(director,' and ') | "
+        "merge (d:Person {name:replace(replace(replace(dir,'[',''),']',''),'\"','')}) merge (d)-[:DIRECTED]->(n)))",
+        {"path":f_path})
+      
+        return Response(dumps({"message": "Import completed"}),
+                        mimetype="application/json")
 
 
 @app.route("/export")
 def export_graph_data():
     db = get_db()
     movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
-    path = 'export'
     
+    path = 'export'
+    try:
+        shutil.rmtree('./' + path)
+    except FileNotFoundError:
+        pass
     try:
         os.mkdir(path)
     except OSError:
