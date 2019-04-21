@@ -5,7 +5,7 @@ $(document).ready(function(){
         $("#butt_all_again").css("display",'none')
         $("#butt_comps").css("display",'block')
         $("#but_search_actors_return").css("display",'block')
-        $("#but_search_actors").css("width",'85px')
+        $("#but_search_actors").css("width",'78px')
         show_this_actor();
     });
     $("#but_search_actors_return").click(function (){
@@ -14,7 +14,7 @@ $(document).ready(function(){
         $("#butt_all_again").css("display",'none')
         $("#butt_comps").css("display",'block')
         $("#but_search_actors_return").css("display",'none')
-        $("#but_search_actors").css("width",'200px')
+        $("#but_search_actors").css("width",'190px')
         show_all();
     });
 
@@ -25,7 +25,7 @@ $(document).ready(function(){
         $("#butt_all_again").css("display",'block')
         $("#butt_comps").css("display",'none')
         $("#but_search_actors_return").css("display",'none')
-        $("#but_search_actors").css("width",'200px')
+        $("#but_search_actors").css("width",'190px')
     });
     $("#butt_next_comp_act").click(show_comp_next);
     $("#butt_prev_comp_act").click(show_comp_prev);
@@ -37,7 +37,7 @@ $(document).ready(function(){
         $("#butt_all_again").css("display",'none')
         $("#butt_comps").css("display",'block')
         $("#but_search_actors_return").css("display",'none')
-        $("#but_search_actors").css("width",'200px')
+        $("#but_search_actors").css("width",'190px')
     });
     let comp_id = 0;
     let count_comps=1;
