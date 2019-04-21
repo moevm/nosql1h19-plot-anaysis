@@ -1,10 +1,31 @@
 $(document).ready(function(){
+    $("#but_search_actors").click(function (){
+        $("#butt_next_comp_act").css("display",'none')
+        $("#butt_prev_comp_act").css("display",'none')
+        $("#butt_all_again").css("display",'none')
+        $("#butt_comps").css("display",'block')
+        $("#but_search_actors_return").css("display",'block')
+        $("#but_search_actors").css("width",'78px')
+        show_this_actor();
+    });
+    $("#but_search_actors_return").click(function (){
+        $("#butt_next_comp_act").css("display",'none')
+        $("#butt_prev_comp_act").css("display",'none')
+        $("#butt_all_again").css("display",'none')
+        $("#butt_comps").css("display",'block')
+        $("#but_search_actors_return").css("display",'none')
+        $("#but_search_actors").css("width",'190px')
+        show_all();
+    });
+
     $("#butt_comps").click(function () {
         show_comp_next()
         $("#butt_next_comp_act").css("display",'block')
         $("#butt_prev_comp_act").css("display",'block')
         $("#butt_all_again").css("display",'block')
         $("#butt_comps").css("display",'none')
+        $("#but_search_actors_return").css("display",'none')
+        $("#but_search_actors").css("width",'190px')
     });
     $("#butt_next_comp_act").click(show_comp_next);
     $("#butt_prev_comp_act").click(show_comp_prev);
@@ -15,6 +36,8 @@ $(document).ready(function(){
         $("#butt_prev_comp_act").css("display",'none')
         $("#butt_all_again").css("display",'none')
         $("#butt_comps").css("display",'block')
+        $("#but_search_actors_return").css("display",'none')
+        $("#but_search_actors").css("width",'190px')
     });
     let comp_id = 0;
     let count_comps=1;
@@ -27,7 +50,7 @@ $(document).ready(function(){
 
     $.get('/count_components_act', function (data) {
         count_comps=data;
-        $('#count_comps_act').text(data);
+        $('#count_comps_act').text("Components: "+data);
         $('#butt_comps').prop('disabled',false);
     });
     function show_comp_next() {
@@ -56,6 +79,17 @@ $(document).ready(function(){
 
         d3.json("/graph", function(error, graph) {
             if (error) return;
+            create_act_graph(force,svg,graph);
+        });
+        mouswheel_bind();
+    }
+
+    function  show_this_actor() {
+        d3.select("#graph").selectAll("*").remove()
+        var svg = d3.select("#graph").append("svg")
+            .attr('viewBox',`-300 -300 2000 2000`)
+            .attr("pointer-events", "all");
+        $.get('/specific_actor_graph', {actor: $('#actors_for_search').val()}, function (graph) {
             create_act_graph(force,svg,graph);
         });
         mouswheel_bind();
