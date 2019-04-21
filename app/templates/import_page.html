@@ -2,28 +2,46 @@
 
 {% block js %}
 <script type="text/javascript" src = "/static/js/import.js"></script>
+<script type="text/javascript" src = "/static/js/input_file.js"></script>
 {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/load_animation.css">
+<link rel="stylesheet" href="/static/css/input_file.css">
 {% endblock %}
 
 {% block content %}
 <div id="modal1" class="w3-modal">
     <div class="w3-modal-content w3-animate-top w3-card-4" style="width: 450px">
       <header class="w3-container" style="color: #fff;background-color: #333;">
-        <h2>Импорт данных</h2>
+        <h2>Data import</h2>
       </header>
       <div class="w3-container">
-        <p>Перед загрузкой все старые данные будут удалены!</p>
-        <p>Вы уверены, что хотите продолжить?</p>
+        <p>All old data will be deleted!</p>
+        <p>Are you sure you want to continue?</p>
       </div>
       <div class="w3-container w3-center">
-	      <button class="w3-button w3-red w3-section w3-padding" type="submit" id="btn-cancel">Отменить</button>
-	      <button class="w3-button w3-green w3-section w3-padding" type="submit" id="btn-accept">Продолжить</button>
+	      <button class="w3-button w3-red w3-section w3-padding" type="submit" id="btn-cancel">Cancel</button>
+	      <button class="w3-button w3-green w3-section w3-padding" type="submit" id="btn-accept">Continue</button>
 	  </div>
     </div>
   </div>
-<div id="status" style="width:300px;margin:auto;">Импорт занимает от 1го до 2х часов. Пожалуйста, подождите.</div>
+
+<div id="status" class="w3-center" style="width:300px;margin:auto;"></div>
+
+<div class="input-file-wrap">
+  <div class="form-group">
+    <input type="file" name="file" id="file" class="input-file">
+    <label for="file" class="btn btn-tertiary js-labelFile">
+      <i class="icon fa fa-check"></i>
+      <span class="js-fileName">Download file</span>
+    </label>
+  </div>
+ </div>
+
+ <div id='btn-start-import-wrap' style="width:300px;margin:auto;">
+   <button id="start-import-btn" class="w3-button w3-light-gray w3-border w3-border-blue" style="width: 100%">Start import</button>
+ </div>
+
 <div id="fountainTextG" class="w3-center"><div id="fountainTextG_1" class="fountainTextG">I</div><div id="fountainTextG_2" class="fountainTextG">m</div><div id="fountainTextG_3" class="fountainTextG">p</div><div id="fountainTextG_4" class="fountainTextG">o</div><div id="fountainTextG_5" class="fountainTextG">r</div><div id="fountainTextG_6" class="fountainTextG">t</div><div id="fountainTextG_7" class="fountainTextG">i</div><div id="fountainTextG_8" class="fountainTextG">n</div><div id="fountainTextG_9" class="fountainTextG">g</div><div id="fountainTextG_10" class="fountainTextG">.</div><div id="fountainTextG_11" class="fountainTextG">.</div><div id="fountainTextG_12" class="fountainTextG">.</div></div>
 {% endblock %}
