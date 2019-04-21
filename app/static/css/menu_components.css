@@ -4,9 +4,9 @@
     border: 1px solid #000000;
     right:0;
     top:150px;
-    margin-right: -200px;
+    margin-right: -250px;
     background-color: white;
-    width: 200px;
+    width: 250px;
     height:300px;
 }
 .butt_menu_components{
@@ -26,11 +26,17 @@
    padding: 5px;
    cursor: pointer
 }
-.but0,.but1,.but2,.but3 {
+.but0,.but1,.but2,.but3,#but_search_actors,#but_search_directors  {
 	float: left;
 	margin:0 5px;
 	height: 60px;
-	width: 150px;
+	width: 200px;
+}
+#but_search_actors_return, #but_search_directors_return {
+    float: left;
+    margin:0 5px;
+    height: 60px;
+    width: 85px;
 }
 
 
