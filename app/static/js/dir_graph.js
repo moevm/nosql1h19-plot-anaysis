@@ -52,7 +52,7 @@ $(document).ready(function(){
 
     $.get('/count_components_dir', function (data) {
         count_comps=data;
-        $('#count_comps_dir').text("Quantity: "+data);
+        $('#count_comps_dir').text("Components: "+data);
         $('#butt_comps').prop('disabled',false);
     });
 
