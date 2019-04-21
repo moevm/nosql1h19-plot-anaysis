@@ -4,17 +4,17 @@
     border: 1px solid #000000;
     right:0;
     top:150px;
-    margin-right: -250px;
+    margin-right: -260px;
     background-color: white;
-    width: 250px;
-    height:300px;
+    width: 260px;
+    height:400px;
 }
 .butt_menu_components{
     position:absolute;
     right:0;
     top:150px;
     width: 30px;
-    height:300px;
+    height:400px;
     border-radius: 15px 0px 0px 15px;
     background-color: black;
     color: white;
@@ -26,17 +26,27 @@
    padding: 5px;
    cursor: pointer
 }
-.but0,.but1,.but2,.but3,#but_search_actors,#but_search_directors  {
+
+.but0{
+	float: left;
+	margin:0 5px;
+	height: 180px;
+	width: 190px;
+	white-space: pre-line;
+
+}
+
+.but1,.but2,.but3,#but_search_actors,#but_search_directors  {
 	float: left;
 	margin:0 5px;
 	height: 60px;
-	width: 200px;
+	width: 190px;
 }
 #but_search_actors_return, #but_search_directors_return {
     float: left;
     margin:0 5px;
     height: 60px;
-    width: 85px;
+    width: 78px;
 }
 
 
