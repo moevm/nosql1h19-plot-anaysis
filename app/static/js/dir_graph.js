@@ -28,7 +28,7 @@ $(document).ready(function(){
 
     $.get('/count_components_dir', function (data) {
         count_comps=data;
-        $('#count_comps_dir').text(data);
+        $('#count_comps_dir').text("Quantity"+data);
         $('#butt_comps').prop('disabled',false);
     });
 
