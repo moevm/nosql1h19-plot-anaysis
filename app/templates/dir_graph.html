@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="/static/css/graph_legend.css">
 	<link rel="stylesheet" href="/static/css/menu_components.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block for_graph %}
@@ -24,14 +25,15 @@
 <div style="position:absolute;right:0;top:50;cursor: pointer"><i id="zoom-out-btn" class="material-icons" style="font-size: 80px">zoom_out</i></div>
 <div class="butt_menu_components">
 	<p class="show">
-		Show
+		Show panel
 	</p>
 </div>
 <div class="container solo_components_menu">
-	<div id="count_comps_dir"></div>
-	<button class="w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id = "butt_comps">Show first</button>
-	<button class="but1 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_prev_comp_dir" style="display: none"> Prev</button>
-	<button class="but2 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_next_comp_dir" style="display: none"> Next</button>
+	<div class="w3-margin-top w3-margin-left" id="count_comps_dir"></div>
+	<button class="but0 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id = "butt_comps">Show first</button>
+	<button class="but1 fa fa-arrow-left w3-xxlarge w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_prev_comp_dir" style="display: none"> </button>
 	<button class="but3 w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_all_again" style="display: none"> Return</button>
+	<button class="but2 fa fa-arrow-right w3-xxlarge w3-button w3-black w3-hover-white w3-round w3-margin-top w3-margin-left" id="butt_next_comp_dir" style="display: none"> </button>
+	
 </div>
 {% endblock %}
