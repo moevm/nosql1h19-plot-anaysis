@@ -17,7 +17,7 @@
   - remove or comment "dbms.directories.import=import" to allow files to be loaded from anywhere in the filesystem (this setting  constrains all `LOAD CSV` import files to be under the `import` directory)
   - add or uncomment "dbms.security.allow_csv_import_from_file_urls=true"
   
-==== Start app
+==== Configure app
 
 For Linux:
 [source]
