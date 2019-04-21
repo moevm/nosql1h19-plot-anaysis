@@ -1,6 +1,6 @@
 == Neo4j Movies Plots Analysis Application
 
-=== Stack
+=== Stack :sparkles:
 
 * https://github.com/neo4j/neo4j-python-driver[neo4j-python-driver] - Neo4j Bolt Driver for Python
 * http://flask.pocoo.org/[Flask] - Python microframework based on Werkzeug, Jinja 2 and good intentions.
@@ -8,7 +8,7 @@
 * Frontend: jquery, bootstrap, http://d3js.org/[d3.js]
 
 
-=== Setup
+=== Setup :rocket:
 
 ==== First of all for correct work of app you need to configurate your Neo4j DataBase.  
 
