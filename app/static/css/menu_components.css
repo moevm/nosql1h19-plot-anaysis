@@ -7,14 +7,14 @@
     margin-right: -260px;
     background-color: white;
     width: 260px;
-    height:400px;
+    height:440px;
 }
 .butt_menu_components{
     position:absolute;
     right:0;
     top:150px;
     width: 30px;
-    height:400px;
+    height:440px;
     border-radius: 15px 0px 0px 15px;
     background-color: black;
     color: white;
