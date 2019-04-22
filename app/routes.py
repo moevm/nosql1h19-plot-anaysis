@@ -28,7 +28,7 @@ def nocache(view):
         return response
         
     return update_wrapper(no_cache, view)
-    
+
 
 def get_db():
     if not hasattr(g, 'neo4j_db'):
@@ -196,11 +196,7 @@ def import_graph_data():
 def export_graph_data():
     db = get_db()
     movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
-    kek=[]      
-    res=db.run(movies_data)
-    for film in res:
-        kek.append(film["Title"])
-    print(kek)
+    
     path = 'export'
     try:
         shutil.rmtree('./' + path)
