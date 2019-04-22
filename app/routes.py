@@ -1,8 +1,12 @@
 from string import punctuation
 import os
 import shutil
+
+from functools import wraps, update_wrapper
+from datetime import datetime
+
 from json import dumps
-from flask import Flask, g, Response, request, render_template, send_from_directory, abort
+from flask import Flask, g, Response, request, render_template, send_from_directory, abort, make_response
 
 from neo4j import GraphDatabase, basic_auth
 
@@ -12,6 +16,19 @@ password = os.getenv("NEO4J_PASSWORD")
 
 driver = GraphDatabase.driver('bolt://localhost',auth=basic_auth("neo4j", password))
 
+
+def nocache(view):
+    @wraps(view)
+    def no_cache(*args, **kwargs):
+        response = make_response(view(*args, **kwargs))
+        response.headers['Last-Modified'] = datetime.now()
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
+        
+    return update_wrapper(no_cache, view)
+    
 
 def get_db():
     if not hasattr(g, 'neo4j_db'):
@@ -175,10 +192,15 @@ def import_graph_data():
 
 
 @app.route("/export")
+@nocache
 def export_graph_data():
     db = get_db()
     movies_data = "match (n:Movie)<-[:ACTED_IN]-(p:Person), (n)<-[:DIRECTED]-(d:Person) return n.released as ReleaseYear, n.title as Title, n.origin as Origin,collect( distinct d.name) as Director, collect( distinct p.name) as Cast, n.genre as Genre, n.wiki as WikiPage, n.plot as Plot"
-    
+    kek=[]      
+    res=db.run(movies_data)
+    for film in res:
+        kek.append(film["Title"])
+    print(kek)
     path = 'export'
     try:
         shutil.rmtree('./' + path)
